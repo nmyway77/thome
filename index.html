@@ -1,0 +1,169 @@
+ <!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>25과 × 4소과 배열영작 기본형</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: 'Arial Rounded MT Bold', Arial, sans-serif; background:#fff; margin:0; padding:0; }
+    .header {
+      background: #3b82f6; color: #fff; padding: 32px 0 24px 0; text-align: center;
+      font-size: 2.2rem; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      margin-bottom: 18px; border-radius: 0 0 38px 38px;
+    }
+    .mainbar { max-width: 630px; margin: 28px auto 0 auto; display:flex; flex-direction:column; align-items:center; gap:17px; }
+    .lesson-select {
+      padding: 9px 30px; border: 1.5px solid #2563eb; border-radius: 10px; font-size: 1.15rem; background: #fff; color: #222; width: 100%; max-width:320px;
+      margin-bottom: 10px;
+    }
+    .main-title { text-align: center; font-size: 2rem; font-weight: bold; margin: 32px 0 12px 0; color: #23243a;}
+    .section-tabs {
+      display: flex; justify-content: center; gap: 10px; margin: 14px 0 0 0; flex-wrap: wrap;
+    }
+    .section-tab {
+      background: #eee; color: #212a35; border:none; border-radius: 7px; padding: 7px 32px; font-size: 1.12rem;
+      cursor:pointer; transition: background 0.14s, color 0.14s; font-weight: 500;
+    }
+    .section-tab.selected { background: #2563eb; color:#fff; }
+    .content-box { max-width: 780px; min-height: 110px; margin: 35px auto 0 auto; border-radius:18px; background:#fff; box-shadow:0 6px 24px #dde5f0; padding: 38px 34px; }
+    .sentence-row { display: flex; align-items: flex-start; margin-bottom: 28px; }
+    .sentence-content { flex: 1; }
+    .en { font-size: 1.16rem; background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 18px; min-width: 340px; word-break: break-all; }
+    .ko { font-size: 1.13rem; background: #fff; border: 1px solid #efefef; border-radius: 10px; padding: 18px; margin-top: 8px; color: #202020; display: none; }
+    .show-btn { height: 44px; align-self: flex-start; padding: 8px 22px; background: #007aff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; margin-left: 18px;}
+    .word { color: #2366d1; cursor: pointer; padding: 2px 3px; border-radius: 4px; transition: background 0.15s;}
+    .word:hover { background: #eaf1ff; }
+    @media (max-width: 900px) {
+      .main-title { font-size: 1.17rem; }
+      .content-box { padding: 22px 6vw;}
+      .en { min-width: 97%; }
+    }
+    @media (max-width: 650px) {
+      .sentence-row { flex-direction: column; }
+      .show-btn { margin-left: 0; margin-top: 10px; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    목동중2-교과서 배열영작[목동서로영어학원]
+  </div>
+  <div class="mainbar">
+    <select id="lessonSelect" class="lesson-select" onchange="changeLesson()">
+      <!-- JS에서 25과 자동 생성 -->
+    </select>
+    <div class="main-title" id="mainTitle"></div>
+    <div class="section-tabs" id="sectionTabs"></div>
+  </div>
+  <div class="content-box" id="sectionContent"></div>
+
+<script>
+  // 1. 25과 자동 생성
+  const lessonSections = {};
+  for (let i=1; i<=25; i++) {
+    lessonSections[i] = [`${i}-1`, `${i}-2`, `${i}-3`, `${i}-4`];
+  }
+
+  // 2. 각 소과(1-1, 1-2 ...)의 영어+해석 리스트 (예시 1-1만 샘플 넣고 나머지는 빈 배열)
+  const sectionSentences = {
+    '1-1': [
+      {en: "Go-kart racing is exciting.", ko: "고카트 경주는 신이 납니다."},
+      {en: "People come from all over the city to watch.", ko: "사람들은 경주를 보기 위해 도시 곳곳에서 옵니다."}
+    ],
+    '1-2': [],
+    '1-3': [],
+    '1-4': [],
+    // 2-1, 2-2, ... 25-4까지는 빈 배열
+  };
+  // 나머지 모든 구간 기본값 빈배열로
+  for (let i=1; i<=25; i++) {
+    for (let j=1; j<=4; j++) {
+      const key = `${i}-${j}`;
+      if (!sectionSentences[key]) sectionSentences[key] = [];
+    }
+  }
+
+  let currentUnit = 1;
+  let currentSectionIdx = 0;
+
+  // 과 셀렉트 박스 자동 생성
+  function setLessonOptions() {
+    const sel = document.getElementById('lessonSelect');
+    sel.innerHTML = '';
+    for (let i=1; i<=25; i++) {
+      sel.innerHTML += `<option value="${i}">Lesson ${i}</option>`;
+    }
+  }
+  setLessonOptions();
+
+  function changeLesson() {
+    let sel = document.getElementById('lessonSelect');
+    currentUnit = parseInt(sel.value, 10);
+    currentSectionIdx = 0;
+    updateUI();
+  }
+  function selectSection(idx) {
+    currentSectionIdx = idx;
+    updateUI();
+  }
+
+  function updateUI() {
+    // 메인 타이틀
+    document.getElementById('mainTitle').textContent = `Lesson ${currentUnit}`;
+    document.getElementById('lessonSelect').value = currentUnit;
+    // 소과(구간) 탭 생성
+    let tabs = '';
+    let sections = lessonSections[currentUnit] || [];
+    sections.forEach((name, idx) => {
+      tabs += `<button class="section-tab${idx===currentSectionIdx?' selected':''}" onclick="selectSection(${idx})">${name}</button>`;
+    });
+    document.getElementById('sectionTabs').innerHTML = tabs;
+    // 영어+해석 리스트 표시 (구간별)
+    let contentHTML = '';
+    const sectionKey = sections[currentSectionIdx];
+    const sentArr = sectionSentences[sectionKey] || [];
+    sentArr.forEach(({en, ko}, i) => {
+      // 단어 클릭 처리
+      let words = en.split(/(\s+|[.,?!;:])/g).map(word => {
+        let pure = word.replace(/[^A-Za-z\-']/g, '').toLowerCase();
+        if (/[A-Za-z]/.test(word)) {
+          return `<span class="word" onclick="showDict('${pure}')">${word}</span>`;
+        } else {
+          return word;
+        }
+      }).join('');
+      contentHTML += `
+        <div class="sentence-row">
+          <div class="sentence-content">
+            <div class="en">${words}</div>
+            <div class="ko">${ko}</div>
+          </div>
+          <button class="show-btn" onclick="toggleKO(this)">해석</button>
+        </div>
+      `;
+    });
+    document.getElementById('sectionContent').innerHTML = contentHTML || `<i>아직 내용이 없습니다.</i>`;
+  }
+
+  // 해석 보기/숨기기
+  function toggleKO(btn) {
+    const ko = btn.parentElement.querySelector('.ko');
+    if (ko.style.display === 'block') {
+      ko.style.display = 'none';
+      btn.textContent = '해석';
+    } else {
+      ko.style.display = 'block';
+      btn.textContent = '숨기기';
+    }
+  }
+
+  // 단어 클릭 → 네이버 영어사전
+  function showDict(word) {
+    if (!word) return;
+    window.open('https://en.dict.naver.com/#/search?query=' + encodeURIComponent(word), '_blank');
+  }
+
+  updateUI();
+</script>
+</body>
+</html>
