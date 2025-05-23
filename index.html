@@ -2,61 +2,79 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>25과 × 4소과 배열영작 기본형</title>
+  <title>25과 × 4소과 배열영작 - 모바일최적화</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: 'Arial Rounded MT Bold', Arial, sans-serif; background:#fff; margin:0; padding:0; }
+    html, body { margin:0; padding:0; box-sizing: border-box; }
+    body { font-family: 'Arial Rounded MT Bold', Arial, sans-serif; background:#fff; }
     .header {
-      background: #3b82f6; color: #fff; padding: 32px 0 24px 0; text-align: center;
-      font-size: 2.2rem; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+      background: #3b82f6; color: #fff; text-align: center;
+      font-size: 2.0rem; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.07);
       margin-bottom: 18px; border-radius: 0 0 38px 38px;
-      position: relative;
+      min-height: 70px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      padding-top: 18px; padding-bottom: 18px;
     }
     .home-btn {
-      position: absolute; left: 24px; top: 22px;
-      background: #fff; color: #3b82f6; font-size: 1.25rem; border:none; border-radius: 14px;
-      padding: 13px 28px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 10px #0001;
-      transition: background 0.16s, color 0.16s;
+      position: absolute; left: 16px; top: 16px;
+      background: #fff; color: #3b82f6; font-size: 1.07rem; border:none; border-radius: 13px;
+      padding: 10px 20px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 10px #0001;
+      transition: background 0.14s, color 0.14s;
       text-decoration: none; display:inline-block;
+      z-index: 10;
     }
-    .home-btn:hover { background: #e9f2ff; }
-    .mainbar { max-width: 630px; margin: 28px auto 0 auto; display:flex; flex-direction:column; align-items:center; gap:17px; }
+    .home-btn:active, .home-btn:focus, .home-btn:hover { background: #e9f2ff; color: #1757b8;}
+    .header-title {
+      width: 100%; text-align: center; font-size: 1.17em; font-weight: bold; word-break: keep-all;
+      padding: 0 60px;
+    }
+
+    .mainbar { max-width: 550px; margin: 15px auto 0 auto; display:flex; flex-direction:column; align-items:center; gap:12px; }
     .lesson-select {
-      padding: 9px 30px; border: 1.5px solid #2563eb; border-radius: 10px; font-size: 1.15rem; background: #fff; color: #222; width: 100%; max-width:320px;
-      margin-bottom: 10px;
+      padding: 9px 10px; border: 1.3px solid #2563eb; border-radius: 10px; font-size: 1.04rem; background: #fff; color: #222; width: 100%; max-width:98vw; min-width:140px;
+      margin-bottom: 5px;
     }
-    .main-title { text-align: center; font-size: 2rem; font-weight: bold; margin: 32px 0 12px 0; color: #23243a;}
+    .main-title { text-align: center; font-size: 1.28rem; font-weight: bold; margin: 18px 0 9px 0; color: #23243a;}
     .section-tabs {
-      display: flex; justify-content: center; gap: 10px; margin: 14px 0 0 0; flex-wrap: wrap;
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; margin: 8px 0 0 0; width: 100%;
     }
     .section-tab {
-      background: #eee; color: #212a35; border:none; border-radius: 7px; padding: 7px 32px; font-size: 1.12rem;
-      cursor:pointer; transition: background 0.14s, color 0.14s; font-weight: 500;
+      background: #eee; color: #212a35; border:none; border-radius: 7px; padding: 6px 18px; font-size: 1.02rem;
+      cursor:pointer; transition: background 0.14s, color 0.14s; font-weight: 500; margin-bottom: 3px;
     }
     .section-tab.selected { background: #2563eb; color:#fff; }
-    .content-box { max-width: 780px; min-height: 110px; margin: 35px auto 0 auto; border-radius:18px; background:#fff; box-shadow:0 6px 24px #dde5f0; padding: 38px 34px; }
-    .sentence-row { display: flex; align-items: flex-start; margin-bottom: 28px; }
+    .content-box { max-width: 96vw; min-height: 70px; margin: 22px auto 0 auto; border-radius:18px; background:#fff; box-shadow:0 6px 20px #e5eaf5; padding: 18px 8px 18px 8px; }
+    .sentence-row { display: flex; align-items: flex-start; margin-bottom: 18px; }
     .sentence-content { flex: 1; }
-    .en { font-size: 1.16rem; background: #fff; border: 1px solid #e3e3e3; border-radius: 10px; padding: 18px; min-width: 340px; word-break: break-all; }
-    .ko { font-size: 1.13rem; background: #fff; border: 1px solid #efefef; border-radius: 10px; padding: 18px; margin-top: 8px; color: #202020; display: none; }
-    .show-btn { height: 44px; align-self: flex-start; padding: 8px 22px; background: #007aff; color: #fff; border: none; border-radius: 8px; cursor: pointer; font-size: 1rem; margin-left: 18px;}
-    .word { color: #2366d1; cursor: pointer; padding: 2px 3px; border-radius: 4px; transition: background 0.15s;}
+    .en { font-size: 1.07rem; background: #fff; border: 1px solid #e3e3e3; border-radius: 9px; padding: 12px 10px; min-width: 60vw; word-break: break-all; margin-bottom: 2px; color:#2563eb;}
+    .ko { font-size: 1.05rem; background: #fff; border: 1px solid #efefef; border-radius: 9px; padding: 12px 10px; margin-top: 8px; color: #202020; display: none; }
+    .show-btn { height: 36px; align-self: flex-start; padding: 7px 18px; background: #007aff; color: #fff; border: none; border-radius: 7px; cursor: pointer; font-size: 0.97rem; margin-left: 9px;}
+    .show-btn:active, .show-btn:focus { background: #0a51b0;}
+    .word { color: #2366d1; cursor: pointer; padding: 1.5px 2.5px; border-radius: 4px; transition: background 0.13s;}
     .word:hover { background: #eaf1ff; }
-    @media (max-width: 900px) {
-      .main-title { font-size: 1.17rem; }
-      .content-box { padding: 22px 6vw;}
-      .en { min-width: 97%; }
+    i { color:#888; }
+    @media (max-width: 500px) {
+      .header-title { font-size: 0.92em; padding: 0 15vw;}
+      .mainbar { max-width: 99vw; }
+      .content-box { padding: 7vw 2vw;}
+      .en, .ko { min-width: 10vw; font-size: 0.95rem; }
+      .section-tab { font-size: 0.95rem; padding: 6px 13px;}
+      .show-btn { width: 100%; margin: 8px 0 0 0;}
+      .sentence-row { flex-direction: column;}
     }
-    @media (max-width: 650px) {
-      .sentence-row { flex-direction: column; }
-      .show-btn { margin-left: 0; margin-top: 10px; width: 100%; }
+    @media (max-width: 400px) {
+      .main-title { font-size: 1.05rem;}
+      .header-title { font-size: 0.82em;}
+      .section-tab { font-size: 0.91rem;}
     }
   </style>
 </head>
 <body>
   <div class="header">
     <a href="index.html" class="home-btn">홈으로</a>
-    목동중2-교과서 배열영작[목동서로영어학원]
+    <div class="header-title">
+      목동중2-교과서 배열영작[목동서로영어학원]
+    </div>
   </div>
   <div class="mainbar">
     <select id="lessonSelect" class="lesson-select" onchange="changeLesson()">
