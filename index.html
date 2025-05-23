@@ -10,7 +10,16 @@
       background: #3b82f6; color: #fff; padding: 32px 0 24px 0; text-align: center;
       font-size: 2.2rem; font-weight: bold; box-shadow: 0 4px 16px rgba(0,0,0,0.07);
       margin-bottom: 18px; border-radius: 0 0 38px 38px;
+      position: relative;
     }
+    .home-btn {
+      position: absolute; left: 24px; top: 22px;
+      background: #fff; color: #3b82f6; font-size: 1.25rem; border:none; border-radius: 14px;
+      padding: 13px 28px; font-weight: bold; cursor: pointer; box-shadow: 0 2px 10px #0001;
+      transition: background 0.16s, color 0.16s;
+      text-decoration: none; display:inline-block;
+    }
+    .home-btn:hover { background: #e9f2ff; }
     .mainbar { max-width: 630px; margin: 28px auto 0 auto; display:flex; flex-direction:column; align-items:center; gap:17px; }
     .lesson-select {
       padding: 9px 30px; border: 1.5px solid #2563eb; border-radius: 10px; font-size: 1.15rem; background: #fff; color: #222; width: 100%; max-width:320px;
@@ -46,6 +55,7 @@
 </head>
 <body>
   <div class="header">
+    <a href="index.html" class="home-btn">홈으로</a>
     목동중2-교과서 배열영작[목동서로영어학원]
   </div>
   <div class="mainbar">
