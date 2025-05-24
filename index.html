@@ -68,6 +68,7 @@
     .show-btn:active, .show-btn:focus { background: #0a51b0;}
     .word { color: #2366d1; cursor: pointer; padding: 1.5px 2.5px; border-radius: 4px; transition: background 0.13s;}
     .word:hover { background: #eaf1ff; }
+    .audio-bar { margin: 36px 0 0 0; text-align: center; }
     i { color:#888; }
     @media (max-width: 900px) {
       .header { max-width: 98vw; }
@@ -81,6 +82,7 @@
       .section-tab { font-size: 0.95rem; padding: 6px 13px;}
       .show-btn { width: 100%; margin: 8px 0 0 0;}
       .sentence-row { flex-direction: column;}
+      .audio-bar { margin: 20px 0 0 0; }
     }
     @media (max-width: 400px) {
       .main-title { font-size: 1.05rem;}
@@ -99,9 +101,7 @@
     </div>
   </div>
   <div class="mainbar">
-    <select id="lessonSelect" class="lesson-select" onchange="changeLesson()">
-      <!-- JS에서 25과 자동 생성 -->
-    </select>
+    <select id="lessonSelect" class="lesson-select" onchange="changeLesson()"></select>
     <div class="main-title" id="mainTitle"></div>
     <div class="section-tabs" id="sectionTabs"></div>
   </div>
@@ -139,8 +139,16 @@
       {en: "We hope you enjoy these offers.", ko: "이러한 혜택을 통해 즐거운 관람이 되시길 바랍니다."},
       {en: "For any questions, please feel free to contact us.", ko: "궁금하신 점이 있으면 언제든지 연락 주시기 바랍니다."}
     ],
-    // ...이하 생략 (위와 동일)
+    // ... 이하 동일하게 추가
   };
+
+  // 3. 각 구간별 MP3 주소 (이것만 바꾸면 됨!!)
+  const sectionAudio = {
+    '1-1': 'https://your-github-username.github.io/your-repo/audio/1-1.mp3',
+    '1-5': 'https://your-github-username.github.io/your-repo/audio/1-5.mp3',
+    // 필요할 때만 추가 (없는 건 안 나옴)
+  };
+
   // 나머지 모든 구간 기본값 빈배열로
   for (let i=1; i<=25; i++) {
     for (let j=1; j<=4; j++) {
@@ -203,6 +211,19 @@
         </div>
       `;
     });
+
+    // 👉 구간에 오디오 주소가 있으면 하단에 오디오 플레이어 표시
+    if (sectionAudio[sectionKey]) {
+      contentHTML += `
+        <div class="audio-bar">
+          <audio controls style="width:90%;max-width:400px;">
+            <source src="${sectionAudio[sectionKey]}" type="audio/mp3">
+            이 브라우저에서는 오디오를 지원하지 않습니다.
+          </audio>
+        </div>
+      `;
+    }
+
     document.getElementById('sectionContent').innerHTML = contentHTML || `<i>아직 내용이 없습니다.</i>`;
   }
 
@@ -212,14 +233,14 @@
     if (ko.style.display === 'block') {
       ko.style.display = 'none';
       btn.textContent = '해석';
-      window.speechSynthesis.cancel(); // ← 해석 숨길 때 음성 중지
+      window.speechSynthesis.cancel();
     } else {
       ko.style.display = 'block';
       btn.textContent = '숨기기';
       // 발음: 미국식 여성
       const utter = new SpeechSynthesisUtterance(eng);
       utter.lang = 'en-US';
-      utter.rate = 0.9; 
+      utter.rate = 0.9;
       const voices = window.speechSynthesis.getVoices();
       utter.voice =
         voices.find(v => v.name === 'Google US English') ||
