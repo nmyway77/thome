@@ -219,6 +219,7 @@
       // 발음: 미국식 여성
       const utter = new SpeechSynthesisUtterance(eng);
       utter.lang = 'en-US';
+      utter.rate = 0.9; 
       const voices = window.speechSynthesis.getVoices();
       utter.voice =
         voices.find(v => v.name === 'Google US English') ||
